@@ -6,7 +6,7 @@ Event.observe(window, 'load', function() {
     });
   Droppables.add('target', {
     onDrop: function(element) {
-      $('messages').insert('Dropped '+element.id+'\n');
+      $('messages').insert({'top': 'Dropped '+element.id+'\n'});
       }
     });
 });
