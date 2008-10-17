@@ -4,6 +4,8 @@
 // script.aculo.us is freely distributable under the terms of an MIT-style license.
 // For details, see the script.aculo.us web site: http://script.aculo.us/
 
+// edits for sortable multidrag are marked with PATCH BEGIN / PATCH END
+
 if(Object.isUndefined(Effect))
   throw("dragdrop.js requires including script.aculo.us' effects.js library");
 
@@ -825,11 +827,15 @@ var Sortable = {
       document.getElementsByTagName("body").item(0).appendChild(Sortable._marker);
     }    
     var offsets = Position.cumulativeOffset(dropon);
-    Sortable._marker.setStyle({left: offsets[0]+'px', top: offsets[1] + 'px'});
+
+    // PATCH BEGIN: place the marker exactly in the middle between two rows
+    patchOffset = 11; // this value depends on you style settings
+
+    Sortable._marker.setStyle({left: offsets[0]-patchOffset+'px', top: offsets[1] + 'px'});
     
     if(position=='after')
       if(sortable.overlap == 'horizontal') 
-        Sortable._marker.setStyle({left: (offsets[0]+dropon.clientWidth) + 'px'});
+        Sortable._marker.setStyle({left: (offsets[0]+dropon.clientWidth)+patchOffset + 'px'});
       else
         Sortable._marker.setStyle({top: (offsets[1]+dropon.clientHeight) + 'px'});
     
