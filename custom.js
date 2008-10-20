@@ -15,6 +15,7 @@ var MultidragObserver = Class.create({
   onEnd: function(eventName, draggable, domEvent) {
     $$('.dragcount').each(function(e) { e.remove() });
     parentNode = draggable.element.parentNode;
+    // drop the other activated elements near the just dropped draggable
     $$('.activated').each(function(e) {
       if (draggable.element.id == e.id) { return; }
       parentNode.insertBefore(e, draggable.element);
@@ -39,6 +40,8 @@ Event.observe(window, 'load', function() {
   Droppables.add('target', {
     onHover: function(draggable, droppable, percetage) {
       Sortable.unmark();
+      // we use the _marker to signal the patched scripty sortable that we
+      // received the drop and it should let things ordered as they are.
       Sortable._marker = null;
     },
     onDrop: function(element) {
@@ -48,7 +51,6 @@ Event.observe(window, 'load', function() {
     });
   // register our multidrag listener
   Draggables.addObserver(new MultidragObserver($('content')));
-
   // register additional behaviour on the sortables draggables
   Sortable.sortables.content.draggables.each(function(draggable) {
     draggable.element.observe('mousedown', function() {
