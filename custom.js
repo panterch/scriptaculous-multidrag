@@ -61,7 +61,10 @@ Event.observe(window, 'load', function() {
     },
     onDrop: function(element) {
       activated = getActivatedElementIds();
-      $('target').insert({'top': 'Dropped '+activated.sort().join(', ')+'\n'});
+      $('target').insert({'top': 'Dropped '+activated.map(function(e) {
+          return e.substring(e.indexOf('_')+1);
+          }).sort().join(', ')+'\n'});
+      new Effect.Highlight('target', { endcolor: '#f0f0f0' });
       }
     });
   // register our multidrag listener
@@ -72,6 +75,11 @@ Event.observe(window, 'load', function() {
       draggable.element.toggleClassName('activated');
     });
   });
+  Event.observe($('content'), 'click', function(e) {
+      if ('content' == e.element().id) {
+        $$('.activated').each(function(e) { e.removeClassName('activated'); });
+      }
+    });
 });
 
 // returns an array of elements that are in state activated. the element you
