@@ -106,6 +106,6 @@ function dragRevertEffect(element, top_offset, left_offset) {
 
 function message(msg) {
   $('target').insert({'top': '<li>'+msg+'</li>'});
-  new Effect.Highlight('target', { endcolor: '#f0f0f0' });
+  new Effect.Highlight('target', { endcolor: '#f0f0f0', restorecolor: '#f0f0f0' });
 }
     
