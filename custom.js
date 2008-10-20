@@ -1,6 +1,7 @@
 var MultidragObserver = Class.create({
   initialize: function(element) {
     this.element = element;
+    this.lastSequence = Sortable.sequence(this.element);
   },
 
   onStart: function(eventName, draggable, domEvent) {
@@ -10,16 +11,30 @@ var MultidragObserver = Class.create({
     info = new Element('div', { 'class': 'dragcount' });
     info.insert(activated.length);
     draggable.element.appendChild(info);
+    this.lastSequence = Sortable.sequence(this.element);
   },
 
   onEnd: function(eventName, draggable, domEvent) {
     $$('.dragcount').each(function(e) { e.remove() });
+    // do nothing if the drop area has reveived the elements
+    if (null == Sortable._marker) { return; }
+
     parentNode = draggable.element.parentNode;
+    origindex = this.lastSequence.indexOf(draggable.element.id.substring(1+draggable.element.id.indexOf('_')));
+    
     // drop the other activated elements near the just dropped draggable
+    rightSibling = draggable.element;
     $$('.activated').each(function(e) {
-      if (draggable.element.id == e.id) { return; }
-      parentNode.insertBefore(e, draggable.element);
-    });
+      if (draggable.element.id != e.id) {
+        id = e.id.substring(1+e.id.indexOf('_'));
+        if (this.lastSequence.indexOf(id) < origindex) {
+          parentNode.insertBefore(e, draggable.element);
+        } else {
+          parentNode.insertBefore(e, rightSibling.nextSibling);
+          rightSibling = e;
+        }
+      }
+    }, this);
   }
 
 });
@@ -68,16 +83,14 @@ function getActivatedElementIds() {
 }
 
 
-// deactivates the sortable if more than one elements are activated
-function updateSortableBehaviour() {
-
-}
-
 // the effect to apply when drag revert happens
 function dragRevertEffect(element, top_offset, left_offset) {
-  // a scripty Effect.Move used to do do not animate the revert of Draggables
-  new Effect.MoveBy(element, -top_offset, -left_offset, {duration:0});
-  // new Effect.Shrink(element);
+  postop = parseFloat(element.style.top) - top_offset;
+  posleft = parseFloat(element.style.left) - left_offset;
+  element.setStyle({
+    left: posleft.round() + 'px',
+    top:  postop.round()  + 'px'
+  });
 }
 
 
