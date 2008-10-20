@@ -35,10 +35,13 @@ var MultidragObserver = Class.create({
         }
       }
     }, this);
+    // do not use onUpdate to trigger your actions, it may miss the elemets
+    // reordered here...
+    message('New order: '+ Sortable.sequence(this.element).join(', '));
   }
 
 });
-    
+
 
 
 Event.observe(window, 'load', function() {
@@ -61,10 +64,9 @@ Event.observe(window, 'load', function() {
     },
     onDrop: function(element) {
       activated = getActivatedElementIds();
-      $('target').insert({'top': 'Dropped '+activated.map(function(e) {
+      message('Dropped: '+activated.map(function(e) {
           return e.substring(e.indexOf('_')+1);
-          }).sort().join(', ')+'\n'});
-      new Effect.Highlight('target', { endcolor: '#f0f0f0' });
+          }).sort().join(', '));
       }
     });
   // register our multidrag listener
@@ -102,3 +104,8 @@ function dragRevertEffect(element, top_offset, left_offset) {
 }
 
 
+function message(msg) {
+  $('target').insert({'top': '<li>'+msg+'</li>'});
+  new Effect.Highlight('target', { endcolor: '#f0f0f0' });
+}
+    
