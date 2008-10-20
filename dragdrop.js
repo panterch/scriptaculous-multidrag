@@ -407,6 +407,15 @@ var Draggable = Class.create({
     if(this.options.ghosting) {
       if (!this.element._originallyAbsolute)
         Position.relativize(this.element);
+      
+      // PATCH BEGIN
+      // Trigger quasi revert behaviour when Sortable._marker is null:
+      // This is a signal we send ourself from onDrop that the draggable should
+      // remain on its original position
+      if (null == Sortable._marker) {
+        this.element.parentNode.insertBefore(this.element, this._clone);
+      }
+      // PATCH END
       delete this.element._originallyAbsolute;
       Element.remove(this._clone);
       this._clone = null;
