@@ -1,0 +1,10 @@
+This is a demo of a scriptaculous sortable which supports multiple element drag
+and drop like mentioned in http://dev.rubyonrails.org/ticket/2585
+
+The demo shows a sortable and a droppable area. Entries can sorted or dropped to
+the droppable area. If you drop an entry, the sortable will stay in the same
+order.  By clicking on more than one entry, you can activate multi d&d.
+
+I had to patch some lines of scriptys draganddrop.js to achieve the special
+behaviour when dropping without sorting (it's not needed for the multi d&d but
+for my own appliance). The code is a somewhat a hack, rants and patches welcome.
