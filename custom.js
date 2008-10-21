@@ -18,10 +18,15 @@ var MultidragObserver = Class.create({
     $$('.dragcount').each(function(e) { e.remove() });
     // do nothing if the drop area has reveived the elements
     if (null == Sortable._marker) { return; }
+    draggableId = draggable.element.id.substring(1+draggable.element.id.indexOf('_'));
+    origindex = this.lastSequence.indexOf(draggableId);
+    // do nothing if the draggable is still on its place
+    newSequence = Sortable.sequence(this.element);
+    if (origindex == newSequence.indexOf(draggableId)) {
+        return;
+    }
 
     parentNode = draggable.element.parentNode;
-    origindex = this.lastSequence.indexOf(draggable.element.id.substring(1+draggable.element.id.indexOf('_')));
-    
     // drop the other activated elements near the just dropped draggable
     rightSibling = draggable.element;
     $$('.activated').each(function(e) {
