@@ -4,16 +4,22 @@ var MultidragObserver = Class.create({
     this.lastSequence = Sortable.sequence(this.element);
   },
 
+  // called on drag start: displays a info box on the draggable showing how many
+  // elements are activated for this drag if this is a multi element drag
   onStart: function(eventName, draggable, domEvent) {
+    this.lastSequence = Sortable.sequence(this.element);
     draggable.element.addClassName('activated');
     draggable._clone.addClassName('activated');
     activated = getActivatedElementIds();
-    info = new Element('div', { 'class': 'dragcount' });
-    info.insert(activated.length);
-    draggable.element.appendChild(info);
-    this.lastSequence = Sortable.sequence(this.element);
+    if (activated.length > 1) {
+      info = new Element('div', { 'class': 'dragcount' });
+      info.insert(activated.length);
+      draggable.element.appendChild(info);
+    }
   },
 
+  // called on drag end: removes drag count info boxes and reorders if the drag
+  // target was the sortable.
   onEnd: function(eventName, draggable, domEvent) {
     $$('.dragcount').each(function(e) { e.remove() });
     // do nothing if the drop area has reveived the elements
@@ -25,10 +31,9 @@ var MultidragObserver = Class.create({
     if (origindex == newSequence.indexOf(draggableId)) {
         return;
     }
-
-    parentNode = draggable.element.parentNode;
     // drop the other activated elements near the just dropped draggable
     rightSibling = draggable.element;
+    parentNode = draggable.element.parentNode;
     $$('.activated').each(function(e) {
       if (draggable.element.id != e.id) {
         id = e.id.substring(1+e.id.indexOf('_'));
@@ -98,7 +103,8 @@ function getActivatedElementIds() {
 }
 
 
-// the effect to apply when drag revert happens
+// the effect to apply when drag revert happens: this places to element
+// immediatly on its targeted position
 function dragRevertEffect(element, top_offset, left_offset) {
   postop = parseFloat(element.style.top) - top_offset;
   posleft = parseFloat(element.style.left) - left_offset;
@@ -108,7 +114,7 @@ function dragRevertEffect(element, top_offset, left_offset) {
   });
 }
 
-
+// write msg to the target area
 function message(msg) {
   $('target').insert({'top': '<li>'+msg+'</li>'});
   new Effect.Highlight('target', { endcolor: '#f0f0f0', restorecolor: '#f0f0f0' });
