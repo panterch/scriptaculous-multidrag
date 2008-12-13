@@ -55,8 +55,14 @@
         text-align: center;
         clear: both;
       }
+
+      #sortable {
+        list-style: none;
+        padding: 0px;
+        height: 500px;
+      } 
       
-      div.item {
+      #sortable li {
         width: 100px;
         height: 100px;
         float: left;
@@ -66,7 +72,7 @@
         margin: 10px;
       }
       #target {
-        height: 400px;
+        height: 600px;
         border: 2px dotted black;
         list-style-type: none;
         padding: 2px;
@@ -101,7 +107,8 @@
     <script type="text/javascript" src="prototype.js"></script>
     <script type="text/javascript" src="effects.js"></script>
     <script type="text/javascript" src="dragdrop.js"></script>
-    <script type="text/javascript" src="custom.js"></script>
+    <script type="text/javascript" src="multidrag.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
   </head>
   <body>
     <div id="page">
@@ -110,27 +117,36 @@
         <ul id='target'></ul>
       </div>
 
+      <div id='content'>
 
-      <div id="content">
-        <h1>Scripty sortable / multi drag drop example</h1>
+      <h1>Scripty sortable / multi drag drop example</h1>
+      <p>
+          Click on multiple elements to resort or drag them at once /
+          use shift+click to select more than one element at once /
+          click between the elements to deselect all activated elements.
+      </p>
+
+        <ul id="sortable">
         <!-- make sure your ids begin with xxxx_ Sortable.sequence won't
              work if not! -->
-        <div id='item_0' class='item'>0</div>
-        <div id='item_1' class='item'>1</div>
-        <div id='item_2' class='item'>2</div>
-        <div id='item_3' class='item'>3</div>
-        <div id='item_4' class='item'>4</div>
-        <div id='item_5' class='item'>5</div>
-        <div id='item_6' class='item'>6</div>
-        <div id='item_7' class='item'>7</div>
-        <div id='item_8' class='item'>8</div>
-        <div id='item_9' class='item'>9</div>
-        <div id='item_A' class='item'>A</div>
-        <div id='item_B' class='item'>B</div>
-        <div id='item_C' class='item'>C</div>
-        <div id='item_D' class='item'>D</div>
-        <div id='item_E' class='item'>E</div>
-        <div id='item_F' class='item'>F</div>
+          <li id='item_0'>0</li>
+          <li id='item_1'>1</li>
+          <li id='item_2'>2</li>
+          <li id='item_3'>3</li>
+          <li id='item_4'>4</li>
+          <li id='item_5'>5</li>
+          <li id='item_6'>6</li>
+          <li id='item_7'>7</li>
+          <li id='item_8'>8</li>
+          <li id='item_9'>9</li>
+          <li id='item_A'>A</li>
+          <li id='item_B'>B</li>
+          <li id='item_C'>C</li>
+          <li id='item_D'>D</li>
+          <li id='item_E'>E</li>
+          <li id='item_F'>F</li>
+        </ul>
+
       </div>
       
       <div id="footer">
